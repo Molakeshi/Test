@@ -8,5 +8,13 @@ Based on combining magnetic force theorem and linear-response approach, we prese
 
 For WienJ Version 1.0, we can calculate Heisenberg interaction and antisymmetric DM interaction at this moment, while the calculation module of the symmetric \Gamma term is under testing and will be added soon. [http://baidu.com](http://baidu.com)
 
+example
+-------
+```
+init
+
+end
+```
+
 ref
 ----
