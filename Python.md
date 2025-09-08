@@ -1,6 +1,6 @@
-1、两数之和
+1、数组，哈希表
 ====
-compation
+两数之和
 ------
 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。
 
@@ -13,38 +13,106 @@ compation
 输入：nums = [2,7,11,15], target = 9
 输出：[0,1]
 解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
-示例 2：
 
+示例 2：
 输入：nums = [3,2,4], target = 6
 输出：[1,2]
-示例 3：
 
+示例 3：
 输入：nums = [3,3], target = 6
 输出：[0,1]
 
 ```
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        num_dict = {}
+        # 使用哈希表存储数字和对应的索引
+        num_map = {}
+        
+        # 遍历数组
         for i, num in enumerate(nums):
+            # 计算当前数字需要的补数
             complement = target - num
-            if complement in num_dict:
-                return [num_dict[complement], i]
-            num_dict[num] = i
-        return []        
+            
+            # 检查补数是否已经在哈希表中
+            if complement in num_map:
+                # 如果存在，返回两个索引
+                return [num_map[complement], i]
+            
+            # 将当前数字和索引存入哈希表
+            num_map[num] = i
+        
+        # 根据提示，一定会存在有效答案，所以这里理论上不会执行到
+        return []    
 ```
 
-example
+三数之和
 -------
-```
-init
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
 
-end
+注意：答案中不可以包含重复的三元组。
+
+示例 1：
+
+输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+解释：
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+注意，输出的顺序和三元组的顺序并不重要。
+
+示例 2：
+输入：nums = [0,1,1]
+输出：[]
+解释：唯一可能的三元组和不为 0 。
+
+示例 3：
+输入：nums = [0,0,0]
+输出：[[0,0,0]]
+解释：唯一可能的三元组和为 0 。
+
+```
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()  # 先对数组排序
+        n = len(nums)
+        result = []
+        
+        for i in range(n - 2):
+            # 跳过重复的第一个数
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            
+            # 如果最小的三个数之和已经大于0，后面不可能有解
+            if nums[i] + nums[i + 1] + nums[i + 2] > 0:
+                break
+            
+            # 如果当前数加上最大的两个数仍然小于0，跳过当前数
+            if nums[i] + nums[n - 2] + nums[n - 1] < 0:
+                continue
+            
+            left, right = i + 1, n - 1
+            while left < right:
+                total = nums[i] + nums[left] + nums[right]
+                
+                if total == 0:
+                    result.append([nums[i], nums[left], nums[right]])
+                    # 跳过重复的left
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    # 跳过重复的right
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    left += 1
+                    right -= 1
+                elif total < 0:
+                    left += 1
+                else:
+                    right -= 1
+        
+        return result    
 ```
 Authors
 ------
-* Yan
-* Wang
-[diwang0214@nju.edu.cn](diwang0214@nju.edu.cn)
-ref
-----
+
